@@ -32,6 +32,7 @@ public class DatabaseConfig {
 
     public static class DatabaseConfigBuilder {
 
+        private String modID;
         private Path resolvedConfigPath;
 
         private ArrayList<Class<?>> annotatedTables = new ArrayList<>();
@@ -62,6 +63,10 @@ public class DatabaseConfig {
 
         public LevelStorageSource.LevelStorageAccess getLevelStorageAccess() {
             return levelStorageAccess;
+        }
+
+        public String getModID() {
+            return modID;
         }
     }
 

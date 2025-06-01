@@ -39,7 +39,7 @@ public abstract class MinecraftServerMixin {
                 DatabaseConfig databaseConfig = DatabaseConfig.setup(this.storageSource, Path.of(modID, databaseBuilder.getResolvedConfigPath().toString()), modID, databaseBuilder);
                 databaseConfig.setupConfigFile(false);
 
-                var databaseSetup = DatabaseSetup.init(databaseConfig.getDataSource(), databaseBuilder);
+                var databaseSetup = DatabaseSetup.init(databaseConfig.getDataSource(), databaseBuilder, modID);
                 databaseSetup.setupSession();
                 databaseSetup.finalizeSessionSetup();
             }
