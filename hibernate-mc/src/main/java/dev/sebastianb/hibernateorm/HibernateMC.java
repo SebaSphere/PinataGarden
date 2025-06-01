@@ -1,10 +1,12 @@
-package dev.sebastianb.pinatagarden;
+package dev.sebastianb.hibernateorm;
 
 import net.fabricmc.api.ModInitializer;
 
-public class PinataGarden implements ModInitializer {
+public class HibernateMC implements ModInitializer {
 
     @Override
     public void onInitialize() {
+
+
     }
 }

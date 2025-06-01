@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "hibernate_orm",
+  "version": "${version}",
+  "name": "Hibernate for MC",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All Rights Reserved",
+  "icon": "assets/hibernateorm/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dev.sebastianb.hibernateorm.HibernateMC"
+    ]
+  },
+  "mixins": [
+    "hibernate_orm.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

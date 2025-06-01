@@ -7,3 +7,6 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
+include 'hibernate-mc'
+include 'garden'

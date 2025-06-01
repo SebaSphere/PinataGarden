@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "pinatagarden",
   "version": "${version}",
-  "name": "PinataGarden",
+  "name": "Pinata Garden",
   "description": "",
   "authors": [],
   "contact": {},
@@ -18,14 +18,13 @@
     ],
     "main": [
       "dev.sebastianb.pinatagarden.PinataGarden"
+    ],
+    "modmenu": [
+      "dev.sebastianb.pinatagarden.integration.ModMenuIntegration"
     ]
   },
   "mixins": [
-    "pinatagarden.mixins.json",
-    {
-      "config": "pinatagarden.client.mixins.json",
-      "environment": "client"
-    }
+    "pinatagarden.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",

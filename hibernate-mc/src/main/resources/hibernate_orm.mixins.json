@@ -1,9 +1,10 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "dev.sebastianb.pinatagarden.mixin.client",
+  "package": "dev.sebastianb.hibernateorm.mixin",
   "compatibilityLevel": "JAVA_21",
-  "client": [
+  "mixins": [
+    "MinecraftServerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
