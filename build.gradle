@@ -1,6 +1,7 @@
 plugins {
     id 'fabric-loom' version '1.10-SNAPSHOT'
     id 'maven-publish'
+    id("org.hibernate.orm") version "7.0.0.Final"
 }
 
 version = project.mod_version
@@ -42,6 +43,9 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    include 'org.hibernate.orm:hibernate-core:7.0.0.Final'
+
 }
 
 processResources {
