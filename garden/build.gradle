@@ -13,7 +13,7 @@ base {
 }
 
 loom {
-
+    accessWidenerPath = file("src/main/resources/pinatagarden.accesswidener")
     mods {
         "pinatagarden" {
             sourceSet sourceSets.main

@@ -4,13 +4,15 @@
   "package": "dev.sebastianb.pinatagarden.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "MouseMixin"
+    "PlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "client": [
     "CameraMixin",
+    "GameRendererMixin",
+    "GuiMixin",
     "KeyboardInputMixin"
   ]
 }
