@@ -2,6 +2,7 @@ package dev.sebastianb.pinatagarden.client.gui.garden;
 
 import dev.sebastianb.pinatagarden.PinataGarden;
 import dev.sebastianb.pinatagarden.client.gui.util.Tiled2DBufferCreator;
+import dev.sebastianb.pinatagarden.mixin_duck.GuiGraphicsDuck;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
@@ -14,6 +15,7 @@ import org.lwjgl.opengl.GL11;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.function.Function;
 
 import static com.mojang.blaze3d.platform.NativeImage.Format.RGBA;
 import static org.lwjgl.opengl.GL11.*;
@@ -35,7 +37,24 @@ public class MainGardenLayer extends LayeredDraw {
         int centerX = guiGraphics.guiWidth() / 2;
         int centerY = guiGraphics.guiHeight() / 2;
 
-        guiGraphics.blit(RenderType::guiTextured, GREEN_TILE_PATTERN, centerX, centerY, 0,0,88, 88, 88, 88);
+        guiGraphics.pose().pushPose();
+
+        int regionSize = 500;
+
+        ((GuiGraphicsDuck) guiGraphics).blitPattern(
+                RenderType::guiTextured,
+                GREEN_TILE_PATTERN,
+                centerX - (regionSize / 2),
+                centerY - (regionSize / 2),
+                0,0, regionSize, regionSize, regionSize, regionSize,
+                regionSize, regionSize,
+                ARGB.colorFromFloat(0.4F,1,1,1),
+                400,400
+        );
+        guiGraphics.pose().popPose();
+
+
+
 
 
     }

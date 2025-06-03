@@ -17,6 +17,8 @@ public class GuiMixin {
     @Redirect(method = "<init>", at = @At(ordinal = 1, value = "INVOKE", target = "Lnet/minecraft/client/gui/LayeredDraw;add(Lnet/minecraft/client/gui/LayeredDraw;Ljava/util/function/BooleanSupplier;)Lnet/minecraft/client/gui/LayeredDraw;"))
     public LayeredDraw redirectLayeredGUIElements(LayeredDraw instance, LayeredDraw layeredDraw, BooleanSupplier booleanSupplier) {
 
+        instance.add(layeredDraw, booleanSupplier);
+
         // after all layers have been added when the mod inits, we should add any layers defined to render after all vanilla layers
         var layers = GuiScreenSetup.getLayers();
         layers.forEach(layer -> {

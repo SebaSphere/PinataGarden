@@ -35,6 +35,7 @@ public class Tiled2DBufferCreator {
         return tiledInputStream;
     }
 
+
     public Tiled2DBufferCreator(ResourceLocation tiledImageLocation, int imageX, int imageY, int rows, int columns) {
 
         this.totalImageWidth = imageX * rows;
