@@ -15,7 +15,7 @@ public interface GuiElement {
     AbstractWidget getWidget(); // this is the vanilla widget that's a representation. You should be passing 0,0 into the position (unless you want to move absolute pixel value) to let the mod handle positioning
 
     // gets the relative width of the element
-    float getPercantageWidth();
+    float getPercentageWidth();
 
 
     // this is -1 since we want the height to autoscale based off the width. We can override this if we want differently

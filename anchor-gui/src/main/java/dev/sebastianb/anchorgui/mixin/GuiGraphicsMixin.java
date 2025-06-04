@@ -3,7 +3,6 @@ package dev.sebastianb.anchorgui.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import dev.sebastianb.anchorgui.AnchorGUI;
 import dev.sebastianb.anchorgui.mixin_duck.CurrentWidgetHolder;
 import dev.sebastianb.anchorgui.mixin_duck.GuiGraphicsDuck;
 import dev.sebastianb.anchorgui.util.InstanceTracker;
@@ -19,10 +18,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArgs;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 import java.util.function.Function;
 
@@ -39,7 +35,7 @@ public class GuiGraphicsMixin implements GuiGraphicsDuck {
         Object callingInstance = InstanceTracker.getCaller();
 
         if (callingInstance instanceof AbstractWidget abstractWidget) {
-            int screenWidth = (int) (Minecraft.getInstance().getWindow().getGuiScaledWidth() * (CurrentWidgetHolder.getCurrentGuiElement().getPercantageWidth() / 100));
+            int screenWidth = (int) (Minecraft.getInstance().getWindow().getGuiScaledWidth() * (CurrentWidgetHolder.getCurrentGuiElement().getPercentageWidth() / 100));
 
             float previousAspectRation = (float) pixelWidth / (float) pixelHeight;
 

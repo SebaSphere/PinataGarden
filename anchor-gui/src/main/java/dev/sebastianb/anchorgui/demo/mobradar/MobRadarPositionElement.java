@@ -28,7 +28,7 @@ public class MobRadarPositionElement implements GuiElement {
     }
 
     @Override
-    public float getPercantageWidth() {
+    public float getPercentageWidth() {
         return 33.33F; // 33% of the parent element width
     }
 

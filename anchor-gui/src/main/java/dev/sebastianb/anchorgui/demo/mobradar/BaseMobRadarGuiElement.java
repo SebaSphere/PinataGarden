@@ -27,7 +27,7 @@ public class BaseMobRadarGuiElement implements GuiElement {
     }
 
     @Override
-    public float getPercantageWidth() {
+    public float getPercentageWidth() {
         return 20.0F; // 20% of the screen width
     }
 
