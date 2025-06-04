@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "anchorgui",
+  "version": "${version}",
+  "name": "Anchoring GUI lib for MC",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All Rights Reserved",
+  "icon": "assets/anchorgui/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dev.sebastianb.anchorgui.AnchorGUI"
+    ]
+  },
+  "mixins": [
+    "anchorgui.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
