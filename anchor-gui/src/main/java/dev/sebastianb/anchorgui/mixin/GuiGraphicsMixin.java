@@ -6,8 +6,10 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.sebastianb.anchorgui.AnchorGUI;
 import dev.sebastianb.anchorgui.mixin_duck.CurrentWidgetHolder;
 import dev.sebastianb.anchorgui.mixin_duck.GuiGraphicsDuck;
+import dev.sebastianb.anchorgui.util.InstanceTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -34,21 +36,10 @@ public class GuiGraphicsMixin implements GuiGraphicsDuck {
         // FIXME: we only want to cancel blit on classes that use our GUI implementation, this is bad to cancel but couldn't think of a better way to do this
 
 
-        if (resourceLocation.getNamespace().equals(AnchorGUI.MOD_ID)) {
-            System.out.println("Maybe widget");
-            System.out.println(CurrentWidgetHolder.getCurrentWidget());
-            // print all existing variables to debug them
-            System.out.println("i: " + i);
-            System.out.println("pixelWidth: " + pixelWidth); // this is the x position of the blit
-            System.out.println("k: " + k);
-            System.out.println("pixelHeight: " + pixelHeight); // this is the y position of the blit
-            System.out.println("f: " + f);
-            System.out.println("g: " + g);
-            System.out.println("h: " + h);
-            System.out.println("m: " + m);
-            System.out.println("n: " + n);
+        Object callingInstance = InstanceTracker.getCaller();
 
-            int screenWidth = Minecraft.getInstance().getWindow().getGuiScaledWidth() / 5;
+        if (callingInstance instanceof AbstractWidget abstractWidget) {
+            int screenWidth = (int) (Minecraft.getInstance().getWindow().getGuiScaledWidth() * (CurrentWidgetHolder.getCurrentGuiElement().getPercantageWidth() / 100));
 
             float previousAspectRation = (float) pixelWidth / (float) pixelHeight;
 
@@ -56,6 +47,8 @@ public class GuiGraphicsMixin implements GuiGraphicsDuck {
             pixelWidth = screenWidth;
             pixelHeight = (int) (screenWidth * previousAspectRation);
 
+            // sets the caller to null so we don't touch any vanilla stuff
+            InstanceTracker.setCaller(null);
         }
 
         // basically vanilla

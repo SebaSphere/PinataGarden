@@ -1,15 +1,19 @@
 package dev.sebastianb.anchorgui.demo.mobradar;
 
+import dev.sebastianb.anchorgui.AnchorGUI;
 import dev.sebastianb.anchorgui.layout.BaseAnchorPoint;
 import dev.sebastianb.anchorgui.layout.GuiElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.ImageWidget;
 import net.minecraft.client.gui.components.MultiLineTextWidget;
 import net.minecraft.network.chat.Component;
-
+import net.minecraft.resources.ResourceLocation;
 
 
 public class MobRadarPositionElement implements GuiElement {
+
+    ResourceLocation BASE_MOD_RADAR = ResourceLocation.fromNamespaceAndPath(AnchorGUI.MOD_ID, "textures/gui/base_mob_searcher_odometer.png");
 
 
     @Override
@@ -20,7 +24,7 @@ public class MobRadarPositionElement implements GuiElement {
     @Override
     public AbstractWidget getWidget() {
         // probably gets the right font
-        return new MultiLineTextWidget(Component.literal("MEOW TEST"), Minecraft.getInstance().font);
+        return ImageWidget.texture(100,100, BASE_MOD_RADAR, 100, 100);
     }
 
     @Override

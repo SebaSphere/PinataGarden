@@ -23,12 +23,12 @@ public class BaseMobRadarGuiElement implements GuiElement {
     public AbstractWidget getWidget() {
         // we put 0 into the position x/y, width/height respectively as this will be handled by the mod
         // TODO: determine what happens if we put our own values, I'd assume if would be our own positions?
-        return ImageWidget.texture(128,128, BASE_MOD_RADAR, 0, 0);
+        return ImageWidget.texture(100,100, BASE_MOD_RADAR, 100, 100);
     }
 
     @Override
     public float getPercantageWidth() {
-        return 50.0F; // 50% of the screen width
+        return 20.0F; // 20% of the screen width
     }
 
     @Override

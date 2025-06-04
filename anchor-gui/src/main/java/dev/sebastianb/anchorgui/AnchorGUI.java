@@ -1,5 +1,6 @@
 package dev.sebastianb.anchorgui;
 
+import dev.sebastianb.anchorgui.demo.GuiDemoRegistry;
 import net.fabricmc.api.ModInitializer;
 
 public class AnchorGUI implements ModInitializer {
@@ -9,6 +10,7 @@ public class AnchorGUI implements ModInitializer {
     @Override
     public void onInitialize() {
         System.out.println("Anchoring the GUIs");
+        GuiDemoRegistry.register();
     }
 
 }
