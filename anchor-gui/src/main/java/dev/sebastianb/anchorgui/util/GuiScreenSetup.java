@@ -1,4 +1,4 @@
-package dev.sebastianb.pinatagarden.client.gui.util;
+package dev.sebastianb.anchorgui.util;
 
 import net.minecraft.client.gui.LayeredDraw;
 

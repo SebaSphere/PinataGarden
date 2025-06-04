@@ -1,24 +1,13 @@
 package dev.sebastianb.pinatagarden.client.gui.garden;
 
 import dev.sebastianb.pinatagarden.PinataGarden;
-import dev.sebastianb.pinatagarden.client.gui.util.Tiled2DBufferCreator;
-import dev.sebastianb.pinatagarden.mixin_duck.GuiGraphicsDuck;
+import dev.sebastianb.anchorgui.mixin_duck.GuiGraphicsDuck;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-
-import java.awt.image.BufferedImage;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.function.Function;
-
-import static com.mojang.blaze3d.platform.NativeImage.Format.RGBA;
-import static org.lwjgl.opengl.GL11.*;
 
 // this class should be used for the main garden GUI, which will contain the top elements of the garden manager
 public class MainGardenLayer extends LayeredDraw {
@@ -38,19 +27,21 @@ public class MainGardenLayer extends LayeredDraw {
         int centerY = guiGraphics.guiHeight() / 2;
 
         guiGraphics.pose().pushPose();
+        // can we display a screen instead
 
-        int regionSize = 500;
 
-        ((GuiGraphicsDuck) guiGraphics).blitPattern(
-                RenderType::guiTextured,
-                GREEN_TILE_PATTERN,
-                centerX - (regionSize / 2),
-                centerY - (regionSize / 2),
-                0,0, regionSize, regionSize, regionSize, regionSize,
-                regionSize, regionSize,
-                ARGB.colorFromFloat(0.4F,1,1,1),
-                400,400
-        );
+//        int regionSize = 200;
+//
+//        ((GuiGraphicsDuck) guiGraphics).blitPattern(
+//                RenderType::guiTextured,
+//                GREEN_TILE_PATTERN,
+//                centerX - (regionSize / 2),
+//                centerY - (regionSize / 2),
+//                0,0, regionSize, regionSize, regionSize, regionSize,
+//                regionSize, regionSize,
+//                ARGB.colorFromFloat(0.4F,1,1,1),
+//                5,5
+//        );
         guiGraphics.pose().popPose();
 
 

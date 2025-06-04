@@ -1,4 +1,4 @@
-package dev.sebastianb.pinatagarden.mixin_duck;
+package dev.sebastianb.anchorgui.mixin_duck;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;

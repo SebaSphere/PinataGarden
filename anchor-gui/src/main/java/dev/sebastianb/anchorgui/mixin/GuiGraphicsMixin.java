@@ -1,9 +1,12 @@
-package dev.sebastianb.pinatagarden.mixin;
+package dev.sebastianb.anchorgui.mixin;
 
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import dev.sebastianb.pinatagarden.mixin_duck.GuiGraphicsDuck;
+import dev.sebastianb.anchorgui.AnchorGUI;
+import dev.sebastianb.anchorgui.mixin_duck.CurrentWidgetHolder;
+import dev.sebastianb.anchorgui.mixin_duck.GuiGraphicsDuck;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -12,12 +15,60 @@ import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArgs;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 import java.util.function.Function;
 
 // this method will be useful to hook into the graphics class to add tiling
 @Mixin(GuiGraphics.class)
 public class GuiGraphicsMixin implements GuiGraphicsDuck {
+
+
+    @Inject(method = "innerBlit", at = @At(value = "HEAD"), cancellable = true)
+    private void injectInnerBlit(Function<ResourceLocation, RenderType> function, ResourceLocation resourceLocation, int i, int pixelWidth, int k, int pixelHeight, float f, float g, float h, float m, int n, CallbackInfo ci) {
+        // FIXME: we only want to cancel blit on classes that use our GUI implementation, this is bad to cancel but couldn't think of a better way to do this
+
+
+        if (resourceLocation.getNamespace().equals(AnchorGUI.MOD_ID)) {
+            System.out.println("Maybe widget");
+            System.out.println(CurrentWidgetHolder.getCurrentWidget());
+            // print all existing variables to debug them
+            System.out.println("i: " + i);
+            System.out.println("pixelWidth: " + pixelWidth); // this is the x position of the blit
+            System.out.println("k: " + k);
+            System.out.println("pixelHeight: " + pixelHeight); // this is the y position of the blit
+            System.out.println("f: " + f);
+            System.out.println("g: " + g);
+            System.out.println("h: " + h);
+            System.out.println("m: " + m);
+            System.out.println("n: " + n);
+
+            int screenWidth = Minecraft.getInstance().getWindow().getGuiScaledWidth() / 5;
+
+            float previousAspectRation = (float) pixelWidth / (float) pixelHeight;
+
+            // these variables are the size of the blit
+            pixelWidth = screenWidth;
+            pixelHeight = (int) (screenWidth * previousAspectRation);
+
+        }
+
+        // basically vanilla
+        RenderType renderType = function.apply(resourceLocation);
+        Matrix4f matrix4f = this.pose.last().pose();
+        VertexConsumer vertexConsumer = this.bufferSource.getBuffer(renderType);
+        vertexConsumer.addVertex(matrix4f, (float)i, (float)k, 0.0F).setUv(f, h).setColor(n);
+        vertexConsumer.addVertex(matrix4f, (float)i, (float)pixelHeight, 0.0F).setUv(f, m).setColor(n);
+        vertexConsumer.addVertex(matrix4f, (float)pixelWidth, (float)pixelHeight, 0.0F).setUv(g, m).setColor(n);
+        vertexConsumer.addVertex(matrix4f, (float)pixelWidth, (float)k, 0.0F).setUv(g, h).setColor(n);
+
+        ci.cancel();
+    }
 
 
 

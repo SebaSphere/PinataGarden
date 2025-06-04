@@ -1,7 +1,7 @@
 package dev.sebastianb.pinatagarden.client.gui;
 
 import dev.sebastianb.pinatagarden.client.gui.garden.MainGardenLayer;
-import dev.sebastianb.pinatagarden.client.gui.util.GuiScreenSetup;
+import dev.sebastianb.anchorgui.util.GuiScreenSetup;
 import net.minecraft.client.Minecraft;
 
 public class GuiAdditionManager {

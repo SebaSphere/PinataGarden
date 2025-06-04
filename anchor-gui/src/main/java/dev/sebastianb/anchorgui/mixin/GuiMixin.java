@@ -1,6 +1,6 @@
-package dev.sebastianb.pinatagarden.mixin;
+package dev.sebastianb.anchorgui.mixin;
 
-import dev.sebastianb.pinatagarden.client.gui.util.GuiScreenSetup;
+import dev.sebastianb.anchorgui.util.GuiScreenSetup;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.LayeredDraw;
 import org.spongepowered.asm.mixin.Mixin;
