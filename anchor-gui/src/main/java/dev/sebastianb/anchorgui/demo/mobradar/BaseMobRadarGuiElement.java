@@ -28,14 +28,12 @@ public class BaseMobRadarGuiElement implements GuiElement {
 
     @Override
     public float getPercentageWidth() {
-        return 20.0F; // 20% of the screen width
+        return 33.33F; // 20% of the screen width
     }
 
     @Override
     public List<GuiElement> getChildren() {
 
-
-
-        return GuiElement.super.getChildren();
+        return List.of(new MobRadarPositionElement());
     }
 }

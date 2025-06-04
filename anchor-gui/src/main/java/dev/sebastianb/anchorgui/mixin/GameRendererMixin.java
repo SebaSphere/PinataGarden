@@ -2,23 +2,17 @@ package dev.sebastianb.anchorgui.mixin;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.Window;
-import dev.sebastianb.anchorgui.AnchorGUI;
 import dev.sebastianb.anchorgui.layout.GuiElement;
 import dev.sebastianb.anchorgui.mixin_duck.CurrentWidgetHolder;
-import dev.sebastianb.anchorgui.mixin_duck.ScreenDuck;
 import dev.sebastianb.anchorgui.util.GuiScreenInjector;
 import dev.sebastianb.anchorgui.util.InstanceTracker;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.ImageWidget;
-import net.minecraft.client.gui.components.MultiLineTextWidget;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.RenderBuffers;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.joml.Matrix4f;
@@ -31,8 +25,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-
-import java.util.ArrayList;
 
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
@@ -50,25 +42,52 @@ public class GameRendererMixin {
 
 
         for (GuiElement guiElement : GuiScreenInjector.getGuiElements()) {
-            var widget = guiElement.getWidget();
-            widget.active = true;
+
+            setupElementRendering(guiGraphics, guiElement);
 
 
-            guiGraphics.pose().pushPose();
-
-            // TODO: eventually we need to handle input, we're going to abuse the blit render location to bypass with our own system for handling
-
-            // just before rendering, set the object reference for blitting
-            CurrentWidgetHolder.setCurrentWidget(widget, guiElement); // im concerned
-
-            InstanceTracker.setCaller(widget);
-
-            widget.render(guiGraphics, 0, 0, LightTexture.FULL_BRIGHT);
-
-            guiGraphics.pose().popPose();
+            for (GuiElement introspected : guiElement.getChildren()) {
+                recurseGuiElements(introspected, guiGraphics);
+            }
 
         }
 
+    }
+
+    // this should handle all rendering logic
+    @Unique
+    private static void setupElementRendering(GuiGraphics guiGraphics, GuiElement guiElement) {
+        var widget = guiElement.getWidget();
+        widget.active = true;
+
+        guiGraphics.pose().pushPose();
+
+        // TODO: eventually we need to handle input, we're going to abuse the blit render location to bypass with our own system for handling
+
+        // just before rendering, set the object reference for blitting
+        CurrentWidgetHolder.setCurrentWidget(widget, guiElement); // im concerned
+
+        InstanceTracker.setCaller(widget);
+
+        widget.render(guiGraphics, 0, 0, LightTexture.FULL_BRIGHT);
+
+        guiGraphics.pose().popPose();
+    }
+
+    // handle children recursively
+    @Unique
+    private void recurseGuiElements(GuiElement guiElement, GuiGraphics guiGraphics) {
+        setupElementRendering(guiGraphics, guiElement);
+
+        // we need to render first before the base case
+        if (guiElement.getChildren().isEmpty()) {
+            return;
+        }
+
+        for (GuiElement introspected : guiElement.getChildren()) {
+
+            recurseGuiElements(introspected, guiGraphics);
+        }
     }
 
 
