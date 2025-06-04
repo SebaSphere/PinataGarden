@@ -26,6 +26,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import java.time.Duration;
+
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
 
@@ -41,13 +43,14 @@ public class GameRendererMixin {
     private void injectRender(DeltaTracker deltaTracker, boolean bl, CallbackInfo ci, ProfilerFiller profilerFiller, boolean bl2, int i, int j, Window window, RenderTarget renderTarget, Matrix4f matrix4f, Matrix4fStack matrix4fStack, GuiGraphics guiGraphics) {
 
 
-        for (GuiElement guiElement : GuiScreenInjector.getGuiElements()) {
+        for (GuiElement baseParent : GuiScreenInjector.getGuiElements()) {
 
-            setupElementRendering(guiGraphics, guiElement);
+            // it has no parent elements (I hope)
+            setupElementRendering(guiGraphics, baseParent);
 
-
-            for (GuiElement introspected : guiElement.getChildren()) {
-                recurseGuiElements(introspected, guiGraphics);
+            for (GuiElement childElement : baseParent.getChildren()) {
+                baseParent.getParent().setParent(childElement);
+                recurseGuiElements(childElement, guiGraphics);
             }
 
         }
@@ -58,9 +61,10 @@ public class GameRendererMixin {
     @Unique
     private static void setupElementRendering(GuiGraphics guiGraphics, GuiElement guiElement) {
         var widget = guiElement.getWidget();
-        widget.active = true;
+        widget.active = false;
 
-        guiGraphics.pose().pushPose();
+        // FIXME: if it's something like a string widget, it seems to apply a temp grey background? idk why but we need to fix that, maybe I could just make a new widget if I can't fix
+
 
         // TODO: eventually we need to handle input, we're going to abuse the blit render location to bypass with our own system for handling
 
@@ -69,23 +73,50 @@ public class GameRendererMixin {
 
         InstanceTracker.setCaller(widget);
 
+        guiGraphics.pose().pushPose();
+        // Get screen size
+        Window window = Minecraft.getInstance().getWindow();
+        int screenWidth = window.getGuiScaledWidth();
+        int screenHeight = window.getGuiScaledHeight();
+
+
+        int moveWidthScale = (int) (Minecraft.getInstance().getWindow().getGuiScaledWidth() * (CurrentWidgetHolder.getCurrentGuiElement().getPercentageWidth() / 100));
+
+        float previousAspectRation = (float) widget.getWidth() / (float) widget.getHeight();
+
+        // TODO: maybe we could have a mode for if the center of the element applies?
+        // Get widget size
+        int widgetWidth = moveWidthScale;
+        int widgetHeight = moveWidthScale < screenWidth ? (int) (moveWidthScale / previousAspectRation) : screenHeight;
+
+        // Compute centered position
+        float centeredX = (screenWidth - widgetWidth) / 2f;
+        float centeredY = (screenHeight - widgetHeight) / 2f;
+
+
+        // we are going to matrices translate, this is gonna be so bad
+        guiGraphics.pose().translate(centeredX, centeredY, 0);
+
+        // should be the position, we probably want to pass the element relative position instead
         widget.render(guiGraphics, 0, 0, LightTexture.FULL_BRIGHT);
 
         guiGraphics.pose().popPose();
+
+
     }
 
     // handle children recursively
     @Unique
-    private void recurseGuiElements(GuiElement guiElement, GuiGraphics guiGraphics) {
-        setupElementRendering(guiGraphics, guiElement);
+    private void recurseGuiElements(GuiElement childElement, GuiGraphics guiGraphics) {
+        setupElementRendering(guiGraphics, childElement);
 
         // we need to render first before the base case
-        if (guiElement.getChildren().isEmpty()) {
+        if (childElement.getChildren().isEmpty()) {
             return;
         }
 
-        for (GuiElement introspected : guiElement.getChildren()) {
-
+        for (GuiElement introspected : childElement.getChildren()) {
+            childElement.getParent().setParent(introspected);
             recurseGuiElements(introspected, guiGraphics);
         }
     }

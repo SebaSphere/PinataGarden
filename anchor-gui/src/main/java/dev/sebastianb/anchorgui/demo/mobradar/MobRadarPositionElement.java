@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.ImageWidget;
 import net.minecraft.client.gui.components.MultiLineTextWidget;
+import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -24,12 +25,12 @@ public class MobRadarPositionElement implements GuiElement {
     @Override
     public AbstractWidget getWidget() {
         // probably gets the right font
-        return ImageWidget.texture(100,100, BASE_MOD_RADAR, 100, 100);
+        return new StringWidget(Component.literal("Mob Radar Position"), Minecraft.getInstance().font);
     }
 
     @Override
     public float getPercentageWidth() {
-        return 20F; // 33% of the parent element width
+        return 33.33F; // 33% of the parent element width
     }
 
     @Override

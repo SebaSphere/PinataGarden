@@ -16,7 +16,7 @@ public class BaseMobRadarGuiElement implements GuiElement {
 
     @Override
     public BaseAnchorPoint getBaseAnchorPoint() {
-        return BaseAnchorPoint.CENTER_LEFT;
+        return BaseAnchorPoint.TOP_LEFT;
     }
 
     @Override

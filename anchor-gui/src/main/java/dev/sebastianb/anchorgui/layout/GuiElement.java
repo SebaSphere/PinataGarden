@@ -6,6 +6,11 @@ import java.util.List;
 
 public interface GuiElement {
 
+    // don't touch this, it's used by the mod internally to set the parent
+    default GuiParentHolder getParent() {
+        return new GuiParentHolder();
+    }
+
     // the anchor point we're going to base things off
     default BaseAnchorPoint getBaseAnchorPoint() {
         return BaseAnchorPoint.TOP_LEFT;

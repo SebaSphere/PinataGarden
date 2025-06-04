@@ -24,7 +24,7 @@ import java.util.function.Function;
 
 // this method will be useful to hook into the graphics class to add tiling
 @Mixin(GuiGraphics.class)
-public class GuiGraphicsMixin implements GuiGraphicsDuck {
+public abstract class GuiGraphicsMixin implements GuiGraphicsDuck {
 
 
     @Inject(method = "innerBlit", at = @At(value = "HEAD"), cancellable = true)
@@ -35,6 +35,19 @@ public class GuiGraphicsMixin implements GuiGraphicsDuck {
         Object callingInstance = InstanceTracker.getCaller();
 
         if (callingInstance instanceof AbstractWidget abstractWidget) {
+            // print debug
+            System.out.println("TEST INJECT BLIT");
+            System.out.println("Resource location: " + resourceLocation.toString());
+            System.out.println("i: " + i);
+            System.out.println("pixelWidth: " + pixelWidth);
+            System.out.println("k: " + k);
+            System.out.println("pixelHeight: " + pixelHeight);
+            System.out.println("f: " + f);
+            System.out.println("g: " + g);
+            System.out.println("h: " + h);
+            System.out.println("m: " + m);
+            System.out.println("n: " + n);
+
             int screenWidth = (int) (Minecraft.getInstance().getWindow().getGuiScaledWidth() * (CurrentWidgetHolder.getCurrentGuiElement().getPercentageWidth() / 100));
 
             float previousAspectRation = (float) pixelWidth / (float) pixelHeight;
@@ -65,6 +78,8 @@ public class GuiGraphicsMixin implements GuiGraphicsDuck {
 
     @Shadow @Final private MultiBufferSource.BufferSource bufferSource;
 
+
+    @Shadow public abstract PoseStack pose();
 
     // we set all these utility methods up so it's the same thing as a blit but we handle infinite tiling
     @Override
